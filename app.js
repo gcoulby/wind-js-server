@@ -8,10 +8,12 @@ var cors = require('cors')
 
 var app = express()
 var port = process.env.PORT || 7000
+var API_KEY = process.env.API_KEY || ''
+console.log('API_KEY:', API_KEY)
 var baseDir = 'http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_1p00.pl'
 
 // cors config
-var whitelist = ['http://localhost:63342', 'http://localhost:3000', 'http://localhost:4000']
+var whitelist = ['http://localhost:3000']
 
 var corsOptions = {
   origin: function (origin, callback) {
@@ -20,19 +22,29 @@ var corsOptions = {
   },
 }
 
+// Middleware to check the API key
+function apiKeyMiddleware(req, res, next) {
+  const apiKey = req.headers['x-api-key'] // Assuming API key is sent in the `x-api-key` header
+  if (apiKey === API_KEY) {
+    next() // API key is valid, proceed to the next middleware/route handler
+  } else {
+    res.status(403).json({ error: 'Forbidden: Invalid API key' })
+  }
+}
+
 app.listen(port, function (err) {
   console.log('running server on port ' + port)
 })
 
-app.get('/', cors(corsOptions), function (req, res) {
+app.get('/', cors(corsOptions), apiKeyMiddleware, function (req, res) {
   res.send('hello wind-js-server.. go to /latest for wind data..')
 })
 
-app.get('/alive', cors(corsOptions), function (req, res) {
+app.get('/alive', cors(corsOptions), apiKeyMiddleware, function (req, res) {
   res.send('wind-js-server is alive')
 })
 
-app.get('/latest', cors(corsOptions), function (req, res) {
+app.get('/latest', cors(corsOptions), apiKeyMiddleware, function (req, res) {
   /**
    * Find and return the latest available 6 hourly pre-parsed JSON data
    *
@@ -54,7 +66,7 @@ app.get('/latest', cors(corsOptions), function (req, res) {
   sendLatest(moment().utc())
 })
 
-app.get('/nearest', cors(corsOptions), function (req, res, next) {
+app.get('/nearest', cors(corsOptions), apiKeyMiddleware, function (req, res, next) {
   var time = req.query.timeIso
   var limit = req.query.searchLimit
   var searchForwards = false
@@ -199,7 +211,7 @@ function convertGribToJson(stamp, targetMoment, iteration = 0) {
   checkPath('json-data', true)
   var exec = require('child_process').exec
   var child
-  const javaCommandPath = 'java -Xmx512M -jar ./converter/lib/grib2json-0.8.0-SNAPSHOT.jar'
+  const javaCommandPath = 'java -Xmx512M -jar ./converte0r/lib/grib2json-0.8.0-SNAPSHOT.jar'
   const command = `${javaCommandPath} --data --output json-data/${stamp}.json --names --compact grib-data/${stamp}.f000`
 
   console.log('Command: ', command)

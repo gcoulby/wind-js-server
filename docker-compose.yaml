@@ -10,6 +10,7 @@ services:
       - "7000:7000" # Map port 3000 on the host to port 3000 in the container
     environment:
       NODE_ENV: development
+      API_KEY: ${API_KEY} # Pass the API_KEY environment variable to the container
     command: ["node", "app.js"] # Command to start your app
 
 
