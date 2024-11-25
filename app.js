@@ -25,7 +25,7 @@ var corsOptions = {
 
 // Middleware to check the API key
 function apiKeyMiddleware(req, res, next) {
-  const apiKey = req.headers['x-api-key'] // Assuming API key is sent in the `x-api-key` header
+  const apiKey = req.headers['X-API-KEY'] // Assuming API key is sent in the `x-api-key` header
   if (apiKey === API_KEY) {
     next() // API key is valid, proceed to the next middleware/route handler
   } else {
@@ -37,15 +37,15 @@ app.listen(port, function (err) {
   console.log('running server on port ' + port)
 })
 
-app.get('/', cors(corsOptions), function (req, res) {
+app.get('/', function (req, res) {
   res.send('hello wind-js-server.. go to /latest for wind data..')
 })
 
-app.get('/alive', cors(corsOptions), apiKeyMiddleware, function (req, res) {
+app.get('/alive', apiKeyMiddleware, function (req, res) {
   res.send('wind-js-server is alive')
 })
 
-app.get('/latest', cors(corsOptions), apiKeyMiddleware, function (req, res) {
+app.get('/latest', apiKeyMiddleware, function (req, res) {
   /**
    * Find and return the latest available 6 hourly pre-parsed JSON data
    *
