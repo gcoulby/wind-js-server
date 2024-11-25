@@ -11,17 +11,27 @@ var port = process.env.PORT || 7000
 var API_KEY = process.env.API_KEY || ''
 var baseDir = 'http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_1p00.pl'
 
-// cors config
-var whitelist = ['http://localhost:3000']
+// // cors config
+// var whitelist = ['http://localhost:3000']
 
-var corsOptions = {
-  origin: function (origin, callback) {
-    var originIsWhitelisted = whitelist.indexOf(origin) !== -1
-    callback(null, originIsWhitelisted)
-  },
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-API-KEY'],
-  methods: ['GET'],
+// var corsOptions = {
+//   origin: function (origin, callback) {
+//     var originIsWhitelisted = whitelist.indexOf(origin) !== -1
+//     callback(null, originIsWhitelisted)
+//   },
+//   allowedHeaders: ['Content-Type', 'Authorization', 'X-API-KEY'],
+//   methods: ['GET'],
+// }
+
+const corsOptions = {
+  origin: 'http://localhost:3000', // Allow only your frontend origin
+  methods: ['GET', 'POST', 'OPTIONS'], // Explicitly define allowed methods
+  allowedHeaders: ['Content-Type', 'Authorization'], // Define allowed headers
+  credentials: true, // Allow credentials (optional, only if needed)
 }
+
+app.use(cors(corsOptions)) // Apply the CORS middleware
+app.options('*', cors(corsOptions)) // Preflight handling for all routes
 
 // Middleware to check the API key
 function apiKeyMiddleware(req, res, next) {
@@ -67,7 +77,7 @@ app.get('/latest', apiKeyMiddleware, function (req, res) {
   sendLatest(moment().utc())
 })
 
-app.get('/nearest', cors(corsOptions), apiKeyMiddleware, function (req, res, next) {
+app.get('/nearest', apiKeyMiddleware, function (req, res, next) {
   var time = req.query.timeIso
   var limit = req.query.searchLimit
   var searchForwards = false
