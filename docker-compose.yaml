@@ -1,0 +1,15 @@
+services:
+  wind-js-server:
+    build:
+      context: . # Use the current directory as the build context
+    container_name: wind-js-server
+    volumes:
+      - .:/app # Mount the current directory into the container
+      - /app/node_modules # Avoid overwriting node_modules in the container
+    ports:
+      - "7000:7000" # Map port 3000 on the host to port 3000 in the container
+    environment:
+      NODE_ENV: development
+    command: ["node", "app.js"] # Command to start your app
+
+
