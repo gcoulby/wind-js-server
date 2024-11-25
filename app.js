@@ -12,13 +12,15 @@ var API_KEY = process.env.API_KEY || ''
 var baseDir = 'http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_1p00.pl'
 
 // cors config
-var whitelist = ['*']
+var whitelist = ['http://localhost:3000']
 
 var corsOptions = {
   origin: function (origin, callback) {
     var originIsWhitelisted = whitelist.indexOf(origin) !== -1
     callback(null, originIsWhitelisted)
   },
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-API-KEY'],
+  methods: ['GET'],
 }
 
 // Middleware to check the API key
