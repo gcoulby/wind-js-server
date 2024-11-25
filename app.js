@@ -26,7 +26,7 @@ var baseDir = 'http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_1p00.pl'
 const corsOptions = {
   origin: 'http://localhost:3000', // Allow only your frontend origin
   methods: ['GET', 'POST', 'OPTIONS'], // Explicitly define allowed methods
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-API-KEY'], // Define allowed headers
+  allowedHeaders: ['Content-Type', 'Authorization', 'x-api-key'], // Define allowed headers
   credentials: true, // Allow credentials (optional, only if needed)
 }
 
@@ -35,8 +35,8 @@ app.options('*', cors(corsOptions)) // Preflight handling for all routes
 
 // Middleware to check the API key
 function apiKeyMiddleware(req, res, next) {
-  const apiKey = req.headers['X-API-KEY'] // Assuming API key is sent in the `x-api-key` header
-  console.log('API key:', apiKey)
+  const apiKey = req.headers['x-api-key'] // Assuming API key is sent in the `x-api-key` header
+
   if (apiKey === API_KEY) {
     next() // API key is valid, proceed to the next middleware/route handler
   } else {
