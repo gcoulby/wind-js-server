@@ -12,7 +12,7 @@ var API_KEY = process.env.API_KEY || ''
 var baseDir = 'http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_1p00.pl'
 
 // cors config
-var whitelist = ['http://localhost:3000']
+var whitelist = ['*']
 
 var corsOptions = {
   origin: function (origin, callback) {
