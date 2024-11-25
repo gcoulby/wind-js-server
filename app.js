@@ -36,6 +36,7 @@ app.options('*', cors(corsOptions)) // Preflight handling for all routes
 // Middleware to check the API key
 function apiKeyMiddleware(req, res, next) {
   const apiKey = req.headers['X-API-KEY'] // Assuming API key is sent in the `x-api-key` header
+  console.log('API key:', apiKey)
   if (apiKey === API_KEY) {
     next() // API key is valid, proceed to the next middleware/route handler
   } else {
