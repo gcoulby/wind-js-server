@@ -26,7 +26,7 @@ var baseDir = 'http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_1p00.pl'
 const corsOptions = {
   origin: 'http://localhost:3000', // Allow only your frontend origin
   methods: ['GET', 'POST', 'OPTIONS'], // Explicitly define allowed methods
-  allowedHeaders: ['Content-Type', 'Authorization'], // Define allowed headers
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-API-KEY'], // Define allowed headers
   credentials: true, // Allow credentials (optional, only if needed)
 }
 
