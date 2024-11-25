@@ -9,7 +9,6 @@ var cors = require('cors')
 var app = express()
 var port = process.env.PORT || 7000
 var API_KEY = process.env.API_KEY || ''
-console.log('API_KEY:', API_KEY)
 var baseDir = 'http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_1p00.pl'
 
 // cors config
