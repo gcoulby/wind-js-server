@@ -35,7 +35,7 @@ app.listen(port, function (err) {
   console.log('running server on port ' + port)
 })
 
-app.get('/', cors(corsOptions), apiKeyMiddleware, function (req, res) {
+app.get('/', cors(corsOptions), function (req, res) {
   res.send('hello wind-js-server.. go to /latest for wind data..')
 })
 
