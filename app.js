@@ -211,7 +211,7 @@ function convertGribToJson(stamp, targetMoment, iteration = 0) {
   checkPath('json-data', true)
   var exec = require('child_process').exec
   var child
-  const javaCommandPath = 'java -Xmx512M -jar ./converte0r/lib/grib2json-0.8.0-SNAPSHOT.jar'
+  const javaCommandPath = 'java -Xmx512M -jar ./converter/lib/grib2json-0.8.0-SNAPSHOT.jar'
   const command = `${javaCommandPath} --data --output json-data/${stamp}.json --names --compact grib-data/${stamp}.f000`
 
   console.log('Command: ', command)
